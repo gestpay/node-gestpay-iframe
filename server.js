@@ -21,6 +21,12 @@ const app = express();
 // these templates are in "/views", while in "/views/partials"" there are templates
 // that are used by other templates.
 hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerHelper('getGestpayJS', () => {
+  if (properties.testEnv) {
+    return 'https://testecomm.sella.it/pagam/JavaScript/js_GestPay.js';
+  }
+  return 'https://ecomm.sella.it/pagam/JavaScript/js_GestPay.js';
+});
 app.set('view engine', 'hbs');
 
 //configuration of middlewares.
@@ -55,6 +61,32 @@ app.post('/pay', (req, res) => {
         cryptedString,
         item,
         amount
+      });
+    })
+    .catch(err => {
+      res.render('error.hbs', {
+        error: err
+      });
+    });
+});
+
+app.post('/pay-secure', (req, res) => {
+  let item = req.body.item;
+  let amount = req.body.price;
+  let PaRes = req.body.PaRes;
+  console.log(`received request for ${item} with price ${amount}...`);
+  gestpayService
+    .encrypt({
+      item,
+      amount
+    })
+    .then(cryptedString => {
+      res.render('pay-secure.hbs', {
+        shopLogin: properties.shopLogin,
+        cryptedString,
+        item,
+        amount,
+        PaRes
       });
     })
     .catch(err => {

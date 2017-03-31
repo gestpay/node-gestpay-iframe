@@ -1,23 +1,73 @@
-<!DOCTYPE>
 <html>
-
-{{> header }}
+{{> header}}
 
 <body>
-	{{> banner }}
+	{{> banner}}
+
+	<section class="hero is-warning is-hidden" id="errorSection">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title" id="ErrorCode">
+				</h1>
+				<h2 class="subtitle" id="ErrorDescription">
+				</h2>
+			</div>
+		</div>
+	</section>
 
 	<section class="section container">
-		<p>You have requested to buy <b>{{item}}</b>.</p>
-		<p>The price is <b>{{amount}} &euro;</b>.</p>
-		<br>
-		<p>
-			<form action="https://testecomm.sella.it/pagam/pagam.aspx" method="GET">
-				<input type="hidden" name="a" value="{{ shopLogin }}">
-				<input type="hidden" name="b" value="{{ cryptedString }}">
-				<input type="submit" value="Pay Now!" class="button">
-			</form>
-		</p>
+
+		<div class="columns">
+			<div class="column">
+				<h1 class="title">Object to buy: <b>
+                {{item}}
+            </b>.</h1>
+				<h2 class="subtitle">Price: <b>
+                {{amount}}
+                &euro;</b>.</h2>
+				<br>
+				<p>
+			</div>
+			<div class="column is-6">
+
+				<h2 class="title">Credit Card Data</h2>
+
+				<form name="CCForm" id="CCForm" onsubmit="return payModule.checkCC();">
+					<div class="field">
+						<label class="label" for="CC">Credit Card Number</label>
+						<p class="control">
+							<input class="input" type="text" autocomplete="off" id="CC" placeholder="1234 5678 1234 5678" />
+						</p>
+						<label class="label" for="ExpMM">Expiry Month</label>
+						<p class="control">
+							<input class="input" type="text" id="ExpMM" placeholder="05" />
+						</p>
+						<label class="label" for="ExpYY">Expiry Year</label>
+						<p class="control">
+							<input class="input" type="text" id="ExpYY" placeholder="27" />
+						</p>
+						<label class="label" for="CVV2">CVV2 / 4DBC</label>
+						<p class="control">
+							<input class="input" type="text" id="CVV2" placeholder="123" />
+						</p>
+						<p class="control">
+							<input type="submit" id="submit" disabled="true" class="button is-primary" value="Loading..." />
+						</p>
+					</div>
+				</form>
+			</div>
+		</div>
 	</section>
+	<script type="text/javascript">
+		var configuration = {
+			shopLogin: '{{shopLogin}}',
+			encryptedString: '{{cryptedString}}',
+			PaRes: '{{PaRes}}'
+		}
+	</script>
+	<script src="{{getGestpayJS}}" type="text/javascript"></script>
+	<script src="js/util.js" type="text/javascript"></script>
+	<script src="js/app.js" type="text/javascript"></script>
 </body>
 
 </html>
