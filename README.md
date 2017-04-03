@@ -1,6 +1,6 @@
-# node-gestpay-starter
+# node-gestpay-iframe
 
-In this project you'll see an example e-commerce that will pay through Gestpay Starter solution. 
+In this project you'll see an example e-commerce that will pay through Gestpay iFrame solution. 
 
 ## Prerequisites 
 
