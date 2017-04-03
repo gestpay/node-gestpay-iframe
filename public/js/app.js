@@ -1,8 +1,8 @@
 'use strict';
 var payModule = (function(BrowserEnabled, GestPay, configuration, util) {
-  // BrowserEnabled is true if everything is OK
+  // BrowserEnabled is set by Gestpay. True if everything is OK
   if (!BrowserEnabled) {
-    // the browser is NOT supported
+    // if the browser is NOT supported...
     util.showErrors('', 'Browser not supported!', 'start');
     return;
   }
@@ -114,7 +114,9 @@ var payModule = (function(BrowserEnabled, GestPay, configuration, util) {
 
     //place here the code to redirect the card holder to the authentication website
     // similar behavior as an HTTP redirect
-    var gestpay3dUrl = 'https://testecomm.sella.it/pagam/pagam3d.aspx';
+    var gestpay3dUrl = properties.testEnv
+      ? 'https://testecomm.sella.it/pagam/pagam3d.aspx'
+      : 'https://ecomm.sella.it/pagam/pagam3d.aspx';
     //after the 3d authentication, gestpay will redirect to this url:
     var baseUrl = util.getCookie('base_url');
     var redirectUrl = location.origin + baseUrl + '/pay-secure';
@@ -130,7 +132,7 @@ var payModule = (function(BrowserEnabled, GestPay, configuration, util) {
   }
 
   /**
-	 * If 3DSecure validation has been performed, this method will be called. transKey has been saved in
+	 * If 3DSecure validation has been performed, this method will be called. transKey was saved in
 	 * start3DSecureVerification function (at the first step), while PaRes is coming from Gestpay (second step).
 	 * @param PaRes
 	 * @param transKey
@@ -152,13 +154,12 @@ var payModule = (function(BrowserEnabled, GestPay, configuration, util) {
   }
 
   /**
-	 * Called
+	 * Called when the payment succeded (we hope so)
 	 * @param result
 	 */
   function paymentSuccededCallback(result) {
     if (result.ErrorCode != 0) {
       //Call failed an error has occurred
-      //.... place here error handle code...
       util.showErrors(
         result.ErrorCode,
         result.ErrorDescription,
@@ -166,10 +167,13 @@ var payModule = (function(BrowserEnabled, GestPay, configuration, util) {
       );
     } else {
       //Call went good
-      //place here the code to retreive the encrypted string
       redirectToResponsePage(result);
     }
   }
+
+  /**
+	 * the only method exposed by this module is checkCC, others are internal 
+	 */
 
   return {
     checkCC: checkCC
