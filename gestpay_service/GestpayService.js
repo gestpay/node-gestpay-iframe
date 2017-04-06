@@ -1,4 +1,4 @@
-let WsCryptDecrypt = require('../wscryptdecrypt/wscryptdecrypt');
+const WsCryptDecrypt = require('../wscryptdecrypt/wscryptdecrypt');
 const properties = require('../properties');
 
 /**
