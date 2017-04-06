@@ -1,8 +1,8 @@
-const WsCryptDecrypt = require('../wscryptdecrypt/wscryptdecrypt');
+let WsCryptDecrypt = require('../wscryptdecrypt/wscryptdecrypt');
 const properties = require('../properties');
 
 /**
- * This module takes the data coming from the pages and will call WsCryptEncrypt. 
+ * This module takes the data coming from the pages and will call WsCryptEncrypt.
  */
 class GestpayService {
   constructor() {
@@ -13,7 +13,7 @@ class GestpayService {
  * Item to pay only needs to have an amount.
  * @param {object} itemToPay
  * @param {string} itemToPay.amount
- * @returns {Promise<string>} the cryptDecryptString. 
+ * @returns {Promise<string>} the cryptDecryptString.
  */
   encrypt(itemToPay) {
     // build shopTransactionId
@@ -38,7 +38,7 @@ class GestpayService {
   }
 
   /**
- * 
+ *
  * @param {object} decryptRequest
  * @param {string} decryptRequest.cryptedString
  * @returns {Promise.<object>} a Promise with an object rapresentation of the transaction result.

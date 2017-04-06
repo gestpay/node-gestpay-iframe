@@ -1,8 +1,11 @@
 const expect = require('expect');
+//const rewire = require('rewire');
 
-const GestpayService = require('./GestpayService');
+let GestpayService = require('./GestpayService');
+let properties = require('../properties');
 
 describe('GestpayService', () => {
+  //initialization
   let gestpayService = new GestpayService();
 
   it('should request a cryptedString to Gestpay', () => {
@@ -17,21 +20,26 @@ describe('GestpayService', () => {
   });
 
   it('should Decrypt the string (with a mock)', () => {
-    expect.spyOn(gestpayService, 'decrypt').andReturn(
+    //mock wsCryptDecrypt.decrypt method
+    expect.spyOn(gestpayService.wsCryptDecrypt, 'decrypt').andReturn(
       Promise.resolve({
         TransactionType: 'DECRYPT'
       })
     );
 
-    return gestpayService
-      .decrypt({
-        cryptedString: 'abcdefghijklmno'
-      })
-      .then(result => {
-        expect(result).toBeAn('object').toInclude({
-          TransactionType: 'DECRYPT'
-        });
+    let decryptObj = {
+      cryptedString: 'abcdefghijklmno'
+    };
+
+    return gestpayService.decrypt(decryptObj).then(result => {
+      expect(result).toBeAn('object').toInclude({
+        TransactionType: 'DECRYPT'
       });
+      expect(gestpayService.wsCryptDecrypt.decrypt).toHaveBeenCalledWith({
+        shopLogin: properties.shopLogin,
+        CryptedString: decryptObj.cryptedString
+      });
+    });
 
     gestpayService.decrypt.restore();
   });
