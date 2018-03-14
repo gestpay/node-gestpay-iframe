@@ -25,8 +25,8 @@ class GestpayService {
         .encrypt({
           shopLogin: properties.shopLogin,
           uicCode: '242',
-          amount: itemToPay.amount,
-          shopTransactionId
+          shopTransactionId,
+          ...itemToPay //amount, requestToken 
         })
         .then(encryptResponse => {
           resolve(encryptResponse.CryptDecryptString);

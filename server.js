@@ -49,11 +49,12 @@ app.get('/', (req, res) => {
 app.post('/pay', (req, res) => {
   let item = req.body.item;
   let amount = req.body.price;
-  console.log(`received request for ${item} with price ${amount}...`);
+  let useToken = properties.useToken;
+  console.log(`received request for ${item} with price ${amount}... Use Token: ${useToken}`);
   gestpayService
     .encrypt({
-      item,
-      amount
+      amount,
+      requestToken: useToken ? 'MASKEDPAN' : null
     })
     .then(cryptedString => {
       res.render('pay.hbs', {
