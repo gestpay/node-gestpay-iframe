@@ -114,8 +114,8 @@ var payModule = (function(BrowserEnabled, GestPay, configuration, util) {
 
     //place here the code to redirect the card holder to the authentication website
     // similar behavior as an HTTP redirect
-    var gestpay3dUrl = properties.testEnv
-      ? 'https://testecomm.sella.it/pagam/pagam3d.aspx'
+    var gestpay3dUrl = configuration.testEnv 
+      ? 'https://sandbox.gestpay.net/pagam/pagam3d.aspx'
       : 'https://ecomm.sella.it/pagam/pagam3d.aspx';
     //after the 3d authentication, gestpay will redirect to this url:
     var baseUrl = util.getCookie('base_url');

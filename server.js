@@ -23,7 +23,7 @@ const app = express();
 hbs.registerPartials(__dirname + '/views/partials');
 hbs.registerHelper('getGestpayJS', () => {
   if (properties.testEnv) {
-    return 'https://testecomm.sella.it/pagam/JavaScript/js_GestPay.js';
+    return 'https://sandbox.gestpay.net/pagam/JavaScript/js_GestPay.js';
   }
   return 'https://ecomm.sella.it/pagam/JavaScript/js_GestPay.js';
 });
@@ -61,7 +61,8 @@ app.post('/pay', (req, res) => {
         shopLogin: properties.shopLogin,
         cryptedString,
         item,
-        amount
+        amount,
+        testEnv: properties.testEnv
       });
     })
     .catch(err => {
