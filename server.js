@@ -76,26 +76,13 @@ app.post('/pay-secure', (req, res) => {
   let item = req.body.item;
   let amount = req.body.price;
   let PaRes = req.body.PaRes;
-  console.log(`received request for ${item} with price ${amount}...`);
-  gestpayService
-    .encrypt({
+  console.log(`request body: ${JSON.stringify(req.body)} ${JSON.stringify(req.query)}`);
+    res.render('pay-secure.hbs', {
+      shopLogin: properties.shopLogin,
       item,
-      amount
+      amount,
+      PaRes
     })
-    .then(cryptedString => {
-      res.render('pay-secure.hbs', {
-        shopLogin: properties.shopLogin,
-        cryptedString,
-        item,
-        amount,
-        PaRes
-      });
-    })
-    .catch(err => {
-      res.render('error.hbs', {
-        error: err
-      });
-    });
 });
 
 /**

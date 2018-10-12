@@ -4,7 +4,7 @@ In this project you'll see an example e-commerce that will pay through Gestpay i
 
 ## Prerequisites 
 
-- NodeJS (4+)
+- NodeJS (10+)
 
 ## How to start 
 
